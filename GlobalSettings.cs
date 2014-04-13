@@ -7,34 +7,40 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
+namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
 {
     public static class GlobalSettings
     {
         public static readonly string SettingsXmlFilePath;
 
-        public const string DefaultModifyCommentFormat = " MOD:[@author] [@comment] - [@datetime] - [@startend]";
+        public const string DefaultCommentFormat = " [@modify]:[@author] [@comment] - [@datetime] - [@startend]";
 
         public const string DefaultAuthor = "Author";
 
         public const string DefaultDateTimeFormat = "yyyy/MM/dd";
 
-        public const string DefaultDefaultComment = "修正コメントを入力してください。";
+        public const string DefaultComment = "修正コメントを入力してください。";
 
         public const string DefaultStartText = "Start";
 
         public const string DefaultEndText = "End";
 
+        public const string DefaultBugFixText = "BUBFIX";
+
+        public const string DefaultAddText = "ADD";
+ 
+        public const string DefaultModifyText = "MOD";
+
         private static Settings setting;
 
         static GlobalSettings()
         {
-            SettingsXmlFilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.Settings.xml";
+            SettingsXmlFilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.Settings.xml";
 
             setting = Settings.LoadXml(SettingsXmlFilePath);
-            if(string.IsNullOrEmpty(setting.ModifyCommentFormat))
+            if(string.IsNullOrEmpty(setting.CommentFormat))
             {
-                setting.ModifyCommentFormat = DefaultModifyCommentFormat;
+                setting.CommentFormat = DefaultCommentFormat;
             }
             if(string.IsNullOrEmpty(setting.Author))
             {
@@ -44,9 +50,9 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             {
                 setting.DateTimeFormat = DefaultDateTimeFormat;
             }
-            if(string.IsNullOrEmpty(setting.DefaultComment))
+            if(string.IsNullOrEmpty(setting.Comment))
             {
-                setting.DefaultComment = DefaultDefaultComment;
+                setting.Comment = DefaultComment;
             }
             if(string.IsNullOrEmpty(setting.StartText))
             {
@@ -56,19 +62,35 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             {
                 setting.EndText = DefaultEndText;
             }
+            if(string.IsNullOrEmpty(setting.BugFixText))
+            {
+                setting.BugFixText = DefaultBugFixText;
+            }
+            if(string.IsNullOrEmpty(setting.AddText))
+            {
+                setting.AddText = DefaultAddText;
+            }
+            if(string.IsNullOrEmpty(setting.ModifyText))
+            {
+                setting.ModifyText = DefaultModifyText;
+            }
         }
 
-        public static string ModifyCommentFormat
+        public static string CommentFormat
         {
             get
             {
-                return setting.ModifyCommentFormat;
+                return setting.CommentFormat;
             }
             set
             {
-                setting.ModifyCommentFormat = value;
+                ExecuteEvent(CommentFormatChanging);
+                setting.CommentFormat = value;
+                ExecuteEvent(CommentFormatChanged);
             }
         }
+        public static event EventHandler CommentFormatChanging;
+        public static event EventHandler CommentFormatChanged;
 
         public static string Author
         {
@@ -78,9 +100,13 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
             set
             {
+                ExecuteEvent(AuthorChanging);
                 setting.Author = value;
+                ExecuteEvent(AuthorChanged);
             }
         }
+        public static event EventHandler AuthorChanging;
+        public static event EventHandler AuthorChanged;
 
         public static string DateTimeFormat
         {
@@ -90,21 +116,29 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
             set
             {
+                ExecuteEvent(DateTimeFormatChanging);
                 setting.DateTimeFormat = value;
+                ExecuteEvent(DateTimeFormatChanged);
             }
         }
+        public static event EventHandler DateTimeFormatChanging;
+        public static event EventHandler DateTimeFormatChanged;
 
-        public static string DefaultComment
+        public static string Comment
         {
             get
             {
-                return setting.DefaultComment;
+                return setting.Comment;
             }
             set
             {
-                setting.DefaultComment = value;
+                ExecuteEvent(CommentChanging);
+                setting.Comment = value;
+                ExecuteEvent(CommentChanged);
             }
         }
+        public static event EventHandler CommentChanging;
+        public static event EventHandler CommentChanged;
 
         public static string StartText
         {
@@ -114,9 +148,13 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
             set
             {
+                ExecuteEvent(StartTextChanging);
                 setting.StartText = value;
+                ExecuteEvent(StartTextChanged);
             }
         }
+        public static event EventHandler StartTextChanging;
+        public static event EventHandler StartTextChanged;
 
         public static string EndText
         {
@@ -126,9 +164,109 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
             set
             {
+                ExecuteEvent(EndTextChanging);
                 setting.EndText = value;
+                ExecuteEvent(EndTextChanged);
             }
         }
+        public static event EventHandler EndTextChanging;
+        public static event EventHandler EndTextChanged;
+
+        public static string BugFixText
+        {
+            get
+            {
+                return setting.BugFixText;
+            }
+            set
+            {
+                ExecuteEvent(BugFixTextChanging);
+                setting.BugFixText = value;
+                ExecuteEvent(BugFixTextChanged);
+            }
+        }
+        public static event EventHandler BugFixTextChanging;
+        public static event EventHandler BugFixTextChanged;
+
+        public static string AddText
+        {
+            get
+            {
+                return setting.AddText;
+            }
+            set
+            {
+                ExecuteEvent(AddTextChanging);
+                setting.AddText = value;
+                ExecuteEvent(AddTextChanged);
+            }
+        }
+        public static event EventHandler AddTextChanging;
+        public static event EventHandler AddTextChanged;
+
+        public static string ModifyText
+        {
+            get
+            {
+                return setting.ModifyText;
+            }
+            set
+            {
+                ExecuteEvent(ModifyTextChanging);
+                setting.ModifyText = value;
+                ExecuteEvent(ModifyTextChanged);
+            }
+        }
+        public static event EventHandler ModifyTextChanging;
+        public static event EventHandler ModifyTextChanged;
+
+        public static bool BugFixChecked
+        {
+            get
+            {
+                return setting.BugFixChecked;
+            }
+            set
+            {
+                ExecuteEvent(BugFixCheckedChanging);
+                setting.BugFixChecked = value;
+                ExecuteEvent(BugFixCheckedChanged);
+            }
+        }
+        public static event EventHandler BugFixCheckedChanging;
+        public static event EventHandler BugFixCheckedChanged;
+
+        public static bool AddChecked
+        {
+            get
+            {
+                return setting.AddChecked;
+            }
+            set
+            {
+                ExecuteEvent(AddCheckedChanging);
+                setting.AddChecked = value;
+                ExecuteEvent(AddCheckedChanged);
+            }
+        }
+        public static event EventHandler AddCheckedChanging;
+        public static event EventHandler AddCheckedChanged;
+
+        public static bool ModifyChecked
+        {
+            get
+            {
+                return setting.ModifyChecked;
+            }
+            set
+            {
+                ExecuteEvent(ModifyCheckedCheckedChanging);
+                setting.ModifyChecked = value;
+                ExecuteEvent(ModifyCheckedCheckedChanged);
+            }
+        }
+        public static event EventHandler ModifyCheckedCheckedChanging;
+        public static event EventHandler ModifyCheckedCheckedChanged;
 
         public static bool StartupVisibility
         {
@@ -138,9 +276,13 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
             set
             {
+                ExecuteEvent(StartupVisibilityChanging);
                 setting.StartupVisibility = value;
+                ExecuteEvent(StartupVisibilityChanged);
             }
         }
+        public static event EventHandler StartupVisibilityChanging;
+        public static event EventHandler StartupVisibilityChanged;
 
         public static string ToString()
         {
@@ -174,7 +316,21 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
 
         public static bool SaveXml()
         {
-            return setting.SaveXml(SettingsXmlFilePath);
+            return SaveXml(SettingsXmlFilePath);
         }
+
+        public static bool SaveXml(string filePath)
+        {
+            return setting.SaveXml(filePath);
+        }
+
+        private static void ExecuteEvent(EventHandler eventDelegate)
+        {
+            if(eventDelegate != null)
+            {
+                eventDelegate(setting, new EventArgs());
+            }
+        }
+
     }
 }

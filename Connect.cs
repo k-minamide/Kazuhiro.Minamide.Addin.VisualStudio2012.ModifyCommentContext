@@ -8,7 +8,7 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.CommandBars;
 
-namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
+namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
 {
 	/// <summary>アドインを実装するためのオブジェクトです。</summary>
 	/// <seealso class='IDTExtensibility2' />
@@ -22,6 +22,7 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
 		{
             this.AddAddinPart(new CommentEditWindowMenuBarView());
             this.AddAddinPart(new CommentEditWindow());
+            this.AddAddinPart(new ModifyCommentContext());
 		}
 
         private void AddAddinPart(AddinPart addinPart)
@@ -65,7 +66,7 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
                 if(windows != null && windows.Current != null && windows.Current is Window)
                 {
                     Window window = (Window)windows.Current;
-                    if(window.Object is CommentEditWindow)
+                    if(window.Object is CommentEditWindowView)
                     {
                         GlobalSettings.StartupVisibility = window.Visible;
                         break;

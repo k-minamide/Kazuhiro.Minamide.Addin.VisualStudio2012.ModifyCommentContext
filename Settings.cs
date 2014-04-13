@@ -7,22 +7,26 @@ using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
+namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
 {
     public class Settings
     {
-        private string modifyCommentFormat;
-        public string ModifyCommentFormat
+        private string commentFormat;
+        public string CommentFormat
         {
             get
             {
-                return string.IsNullOrEmpty(this.modifyCommentFormat) ? string.Empty : this.modifyCommentFormat;
+                return string.IsNullOrEmpty(this.commentFormat) ? string.Empty : this.commentFormat;
             }
             set
             {
-                this.modifyCommentFormat = value;
+                this.ExecuteEvent(CommentFormatChanging);
+                this.commentFormat = value;
+                this.ExecuteEvent(CommentFormatChanged);
             }
         }
+        public event EventHandler CommentFormatChanging;
+        public event EventHandler CommentFormatChanged;
 
         private string author;
         public string Author
@@ -33,9 +37,13 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
             set
             {
+                this.ExecuteEvent(AuthorChanging);
                 this.author = value;
+                this.ExecuteEvent(AuthorChanged);
             }
         }
+        public event EventHandler AuthorChanging;
+        public event EventHandler AuthorChanged;
 
         private string dateTimeFormat;
         public string DateTimeFormat
@@ -46,22 +54,30 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
             set
             {
+                this.ExecuteEvent(DateTimeFormatChanging);
                 this.dateTimeFormat = value;
+                this.ExecuteEvent(DateTimeFormatChanged);
             }
         }
+        public event EventHandler DateTimeFormatChanging;
+        public event EventHandler DateTimeFormatChanged;
 
-        private string defaultComment;
-        public string DefaultComment
+        private string comment;
+        public string Comment
         {
             get
             {
-                return string.IsNullOrEmpty(this.defaultComment) ? string.Empty : this.defaultComment;
+                return string.IsNullOrEmpty(this.comment) ? string.Empty : this.comment;
             }
             set
             {
-                this.defaultComment = value;
+                this.ExecuteEvent(CommentChanging);
+                this.comment = value;
+                this.ExecuteEvent(CommentChanged);
             }
         }
+        public event EventHandler CommentChanging;
+        public event EventHandler CommentChanged;
 
         private string startText;
         public string StartText
@@ -72,9 +88,13 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
             set
             {
+                this.ExecuteEvent(StartTextChanging);
                 this.startText = value;
+                this.ExecuteEvent(StartTextChanged);
             }
         }
+        public event EventHandler StartTextChanging;
+        public event EventHandler StartTextChanged;
 
         private string endText;
         public string EndText
@@ -85,9 +105,115 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
             set
             {
+                this.ExecuteEvent(EndTextChanging);
                 this.endText = value;
+                this.ExecuteEvent(EndTextChanged);
             }
         }
+        public event EventHandler EndTextChanging;
+        public event EventHandler EndTextChanged;
+
+        private string bugFixText;
+        public string BugFixText
+        {
+            get
+            {
+                return string.IsNullOrEmpty(this.bugFixText) ? string.Empty : this.bugFixText;
+            }
+            set
+            {
+                this.ExecuteEvent(BugFixTextChanging);
+                this.bugFixText = value;
+                this.ExecuteEvent(BugFixTextChanged);
+            }
+        }
+        public event EventHandler BugFixTextChanging;
+        public event EventHandler BugFixTextChanged;
+
+        private string addText;
+        public string AddText
+        {
+            get
+            {
+                return string.IsNullOrEmpty(this.addText) ? string.Empty : this.addText;
+            }
+            set
+            {
+                this.ExecuteEvent(AddTextChanging);
+                this.addText = value;
+                this.ExecuteEvent(AddTextChanged);
+            }
+        }
+        public event EventHandler AddTextChanging;
+        public event EventHandler AddTextChanged;
+
+        private string modifyText;
+        public string ModifyText
+        {
+            get
+            {
+                return string.IsNullOrEmpty(this.modifyText) ? string.Empty : this.modifyText;
+            }
+            set
+            {
+                this.ExecuteEvent(ModifyTextChanging);
+                this.modifyText = value;
+                this.ExecuteEvent(ModifyTextChanged);
+            }
+        }
+        public event EventHandler ModifyTextChanging;
+        public event EventHandler ModifyTextChanged;
+
+        private bool bugFixChecked;
+        public bool BugFixChecked
+        {
+            get
+            {
+                return bugFixChecked;
+            }
+            set
+            {
+                this.ExecuteEvent(BugFixCheckedChanging);
+                this.bugFixChecked = value;
+                this.ExecuteEvent(BugFixCheckedChanged);
+            }
+        }
+        public event EventHandler BugFixCheckedChanging;
+        public event EventHandler BugFixCheckedChanged;
+
+        private bool addChecked;
+        public bool AddChecked
+        {
+            get
+            {
+                return addChecked;
+            }
+            set
+            {
+                this.ExecuteEvent(AddCheckedChanging);
+                this.addChecked = value;
+                this.ExecuteEvent(AddCheckedChanged);
+            }
+        }
+        public event EventHandler AddCheckedChanging;
+        public event EventHandler AddCheckedChanged;
+
+        private bool modifyChecked;
+        public bool ModifyChecked
+        {
+            get
+            {
+                return modifyChecked;
+            }
+            set
+            {
+                this.ExecuteEvent(ModifyCheckedCheckedChanging);
+                this.modifyChecked = value;
+                this.ExecuteEvent(ModifyCheckedCheckedChanged);
+            }
+        }
+        public event EventHandler ModifyCheckedCheckedChanging;
+        public event EventHandler ModifyCheckedCheckedChanged;
 
         private bool startupVisibility;
         public bool StartupVisibility
@@ -98,9 +224,13 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
             set
             {
+                this.ExecuteEvent(StartupVisibilityChanging);
                 this.startupVisibility = value;
+                this.ExecuteEvent(StartupVisibilityChanged);
             }
         }
+        public event EventHandler StartupVisibilityChanging;
+        public event EventHandler StartupVisibilityChanged;
 
 
 
@@ -145,11 +275,16 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
                     break;
             }
 
-            ret += this.ModifyCommentFormat;
+            ret += this.CommentFormat;
 
+            string modifyText = (this.BugFixChecked ? this.BugFixText : string.Empty)
+                                    + (this.AddChecked ? this.AddText : string.Empty)
+                                    + (this.ModifyChecked ? this.ModifyText : string.Empty);
+
+            ret = Regex.Replace(ret, @"\[@modify\]", modifyText, RegexOptions.IgnoreCase);
             ret = Regex.Replace(ret, @"\[@author\]", this.Author, RegexOptions.IgnoreCase);
             ret = Regex.Replace(ret, @"\[@datetime\]", date.ToString(this.DateTimeFormat), RegexOptions.IgnoreCase);
-            ret = Regex.Replace(ret, @"\[@comment\]", this.DefaultComment, RegexOptions.IgnoreCase);
+            ret = Regex.Replace(ret, @"\[@comment\]", this.Comment, RegexOptions.IgnoreCase);
             if(!isStart.HasValue)
             {
                 ret = Regex.Replace(ret, @"\[@startend\]", this.StartText + this.EndText, RegexOptions.IgnoreCase);
@@ -212,6 +347,14 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
             }
 
             return ret;
+        }
+
+        private void ExecuteEvent(EventHandler eventDelegate)
+        {
+            if(eventDelegate != null)
+            {
+                eventDelegate(this, new EventArgs());
+            }
         }
     }
 }

@@ -10,9 +10,9 @@
     <StartupObject>
     </StartupObject>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext</AssemblyName>
+    <AssemblyName>Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment</AssemblyName>
     <DeploymentDirectory>.\bin\</DeploymentDirectory>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -24,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <IncrementalBuild>false</IncrementalBuild>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.xml</DocumentationFile>
+    <DocumentationFile>Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -35,10 +35,10 @@
     <WarningLevel>4</WarningLevel>
     <IncrementalBuild>false</IncrementalBuild>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>ModifyCommentContext.xml</DocumentationFile>
+    <DocumentationFile>Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext</RootNamespace>
+    <RootNamespace>Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -56,6 +56,12 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GeneralOption.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GeneralOption.Designer.cs">
+      <DependentUpon>GeneralOption.cs</DependentUpon>
+    </Compile>
     <Compile Include="CommentEditWindowMenuBarView.cs" />
     <Compile Include="CommentEditWindowView.cs">
       <SubType>UserControl</SubType>
@@ -66,6 +72,7 @@
     <Compile Include="Connect.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ModifyCommentContext.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -136,14 +143,14 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\Users\k-minamide\Documents\Visual Studio 2012\Addins\Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext - For Testing.AddIn">
-      <Link>Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext - For Testing.AddIn</Link>
+    <Content Include="..\..\..\Users\k-minamide\Documents\Visual Studio 2012\Addins\Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment - For Testing.AddIn">
+      <Link>Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment - For Testing.AddIn</Link>
     </Content>
     <Content Include="Image\Addacomment_8818.png" />
     <Content Include="Image\GoToNextComment.png" />
     <Content Include="Image\GoToPreviousComment.png" />
     <Content Include="Image\UnComment_11701.png" />
-    <Content Include="Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.AddIn">
+    <Content Include="Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.AddIn">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
@@ -151,12 +158,17 @@
     <EmbeddedResource Include="CommentEditWindowView.resx">
       <DependentUpon>CommentEditWindowView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GeneralOption.resx">
+      <DependentUpon>GeneralOption.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="README.md" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>
     <PreBuildEvent>

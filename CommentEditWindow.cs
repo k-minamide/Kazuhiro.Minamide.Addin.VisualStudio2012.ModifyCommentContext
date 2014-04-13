@@ -13,7 +13,7 @@ using EnvDTE;
 using EnvDTE80;
 using Extensibility;
 
-namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
+namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
 {
     public partial class CommentEditWindow : AddinPart
     {
@@ -22,7 +22,7 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
         /// </summary>
         public static readonly Guid GUID = new Guid("{0dae80bb-411d-4a6d-9ee1-28b88fe03f24}");
 
-        public const string ClassFullName = "Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.CommentEditWindowView";
+        public const string ClassFullName = "Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.CommentEditWindowView";
 
         /// <summary>
         /// ツール名
@@ -42,7 +42,7 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
         /// <summary>
         /// コマンド名
         /// </summary>
-        public const string CommandName = "Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.Connect.ModifyCommentWindowCommentEditWindow";
+        public const string CommandName = "Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.Connect.ModifyCommentWindowCommentEditWindow";
 
         private CommentEditWindowView window = null;
 

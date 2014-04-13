@@ -1,111 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 using EnvDTE;
+using EnvDTE80;
+
+using Extensibility;
+
+using Microsoft.VisualStudio.CommandBars;
+
 
 namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
 {
-    public partial class CommentEditWindowView : AddinPartView
+    public class ModifyCommentContext : AddinPart
     {
-        private bool commentEditEnable;
-        public bool CommentEditEnable
+        /// <summary>
+        /// GUID
+        /// </summary>
+        public static readonly Guid GUID = new Guid("{6d1aaab5-5a9f-476b-827a-51dee77cffab}");
+
+        /// <summary>
+        /// ツール名
+        /// </summary>
+        public const string ToolName = "ModifyCommentContext";
+
+        /// <summary>
+        /// 表示名
+        /// </summary>
+        public const string DisplayName = "修正コメント挿入";
+
+        /// <summary>
+        /// 説明
+        /// </summary>
+        public const string Caption = "修正コメント画面を挿入します";
+
+        /// <summary>
+        /// コマンド名
+        /// </summary>
+        public const string CommandName = "Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.Connect.ModifyCommentContext";
+
+        public override void OnConnection(object Application, Extensibility.ext_ConnectMode ConnectMode, object AddInInst, ref Array custom)
         {
-            get
+            base.OnConnection(Application, ConnectMode, AddInInst, ref custom);
+
+            if(ConnectMode == ext_ConnectMode.ext_cm_Startup)
             {
-                return this.commentEditEnable;
+                Commands2 commands = (Commands2)this.ApplicationObject.Commands;
+
+                //コマンドを [ツール] メニューに配置します。
+                //メイン メニュー項目のすべてを保持するトップレベル コマンド バーである、MenuBar コマンド バーを検索します:
+                CommandBar contextMenuBar = ((CommandBars)ApplicationObject.CommandBars)["Code Window"];
+
+                //アドインによって処理する複数のコマンドを追加する場合、この try ブロックおよび catch ブロックを重複できます。
+                //  ただし、新しいコマンド名を含めるために QueryStatus メソッドおよび Exec メソッドの更新も実行してください。
+                try
+                {
+                    //コマンド コレクションにコマンドを追加します:
+                    object[] reflectionGUID = GUID.ToByteArray().Select(x => (object)x).ToArray();
+                    Command command = commands.AddNamedCommand2(AddInInstance, ToolName, DisplayName, Caption, true, 59, ref reflectionGUID, (int)vsCommandStatus.vsCommandStatusSupported + (int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
+
+                    //コマンドのコントロールを [ツール] メニューに追加します:
+                    if((command != null) && (contextMenuBar != null))
+                    {
+                        command.AddControl(contextMenuBar);
+                    }
+                }
+                catch(System.ArgumentException)
+                {
+                    //同じ名前のコマンドが既に存在しているため、例外が発生した可能性があります。
+                    //  その場合、コマンドを再作成する必要はありません。 例外を 
+                    //  無視しても安全です。
+                }
             }
-
-            set
-            {
-                this.commentEditEnable = value;
-
-                this.btnAdd.Enabled = this.commentEditEnable;
-                this.btnDelete.Enabled = false;
-            }
         }
 
-        public CommentEditWindowView()
+        public override void OnAddInsUpdate(ref Array custom)
         {
-            InitializeComponent();
-
-            this.dtpDate.Value = DateTime.Now;
-            GlobalSettings.AuthorChanged += GlobalSettings_AuthorChanged;
-
-            this.radBugFix.Checked = GlobalSettings.BugFixChecked;
-            this.radAdd.Checked = GlobalSettings.AddChecked;
-            this.radModify.Checked = GlobalSettings.ModifyChecked;
-            this.dtpDate.Value = DateTime.Now;
-            this.txtAuthor.Text = GlobalSettings.Author;
-            this.txtComment.Text = GlobalSettings.Comment;
-
-            GlobalSettings.BugFixCheckedChanged += GlobalSettings_BugFixCheckedChanged;
-            GlobalSettings.AddCheckedChanged += GlobalSettings_AddCheckedChanged;
-            GlobalSettings.ModifyCheckedCheckedChanged += GlobalSettings_ModifyCheckedCheckedChanged;
-            GlobalSettings.AuthorChanged += GlobalSettings_AuthorChanged;
-            GlobalSettings.CommentChanged += GlobalSettings_CommentChanged;
- 
         }
 
-        private void radBugFix_CheckedChanged(object sender, EventArgs e)
+        public override void OnBeginShutdown(ref Array custom)
         {
-            GlobalSettings.BugFixChecked = this.radBugFix.Checked;
         }
 
-        void GlobalSettings_BugFixCheckedChanged(object sender, EventArgs e)
+        public override void OnDisconnection(Extensibility.ext_DisconnectMode RemoveMode, ref Array custom)
         {
-            this.radBugFix.Checked = GlobalSettings.BugFixChecked;
         }
 
-        private void radAdd_CheckedChanged(object sender, EventArgs e)
+        public override void OnStartupComplete(ref Array custom)
         {
-            GlobalSettings.AddChecked = this.radAdd.Checked;
         }
 
-        void GlobalSettings_AddCheckedChanged(object sender, EventArgs e)
+        public override void Exec(string CmdName, EnvDTE.vsCommandExecOption ExecuteOption, ref object VariantIn, ref object VariantOut, ref bool Handled)
         {
-            this.radAdd.Checked = GlobalSettings.AddChecked;
-        }
-
-        private void radModify_CheckedChanged(object sender, EventArgs e)
-        {
-            GlobalSettings.ModifyChecked = this.radModify.Checked;
-        }
-
-        void GlobalSettings_ModifyCheckedCheckedChanged(object sender, EventArgs e)
-        {
-            this.radModify.Checked = GlobalSettings.ModifyChecked;
-        }
-
-        private void txtAuthor_TextChanged(object sender, EventArgs e)
-        {
-            GlobalSettings.Author = this.txtAuthor.Text;
-        }
-
-        void GlobalSettings_AuthorChanged(object sender, EventArgs e)
-        {
-            this.txtAuthor.Text = GlobalSettings.Author;
-        }
-
-        private void txtComment_TextChanged(object sender, EventArgs e)
-        {
-            GlobalSettings.Comment = this.txtComment.Text;
-        }
-        void GlobalSettings_CommentChanged(object sender, EventArgs e)
-        {
-            this.txtComment.Text = GlobalSettings.Comment;
-        }
-
-        void btnAdd_Click(object sender, EventArgs e)
-        {
-            if(this.ApplicationObject != null
+            if(CommandName.Equals(CmdName)
+                && this.ApplicationObject != null
                 && this.ApplicationObject.ActiveDocument != null)
             {
                 // applicationObjからアクティブドキュメント(ソースエディタ)を取得
@@ -205,7 +195,7 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
                     // 行の先頭に移動
                     text.StartOfLine(vsStartOfLineOptions.vsStartOfLineOptionsFirstColumn, false);
                     // 修正コメント(開始)を追加する
-                    text.Insert(indentText + GlobalSettings.ToString(true, dtpDate.Value, language));
+                    text.Insert(indentText + GlobalSettings.ToString(true, language));
 
                     // 選択中テキストの末行に移動
                     text.GotoLine(endLine, false);
@@ -222,15 +212,22 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
                     // 行の先頭に移動
                     text.StartOfLine(vsStartOfLineOptions.vsStartOfLineOptionsFirstColumn, false);
                     // 修正コメント(終了)を追加する
-                    text.Insert(indentText + GlobalSettings.ToString(false, dtpDate.Value, language));
+                    text.Insert(indentText + GlobalSettings.ToString(false, language));
 
                     // 最初の行の先頭文字に移動
                     text.GotoLine(startLine, false);
                     text.StartOfLine(vsStartOfLineOptions.vsStartOfLineOptionsFirstText, false);
                 }
             }
+        }
 
-            return;
+        public override void QueryStatus(string CmdName, EnvDTE.vsCommandStatusTextWanted NeededText, ref EnvDTE.vsCommandStatus StatusOption, ref object CommandText)
+        {
+            if(NeededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone
+                && CommandName.Equals(CmdName))
+            {
+                StatusOption = vsCommandStatus.vsCommandStatusSupported | vsCommandStatus.vsCommandStatusEnabled;
+            }
         }
     }
 }

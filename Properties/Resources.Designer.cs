@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.Properties {
+namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.Properties {
     using System;
     
     
@@ -39,8 +39,7 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.Properti
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.Properties.Resource" +
-                            "s", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

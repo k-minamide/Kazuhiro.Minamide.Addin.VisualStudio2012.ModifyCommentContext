@@ -4,7 +4,7 @@ using Extensibility;
 
 using System.Windows.Forms;
 
-namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
+namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
 {
     public class AddinPartView : UserControl
     {

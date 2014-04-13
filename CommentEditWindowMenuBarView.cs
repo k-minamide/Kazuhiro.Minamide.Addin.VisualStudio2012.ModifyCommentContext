@@ -12,7 +12,7 @@ using Extensibility;
 using Microsoft.VisualStudio.CommandBars;
 
 
-namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
+namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
 {
     public class CommentEditWindowMenuBarView : AddinPart
     {
@@ -39,7 +39,7 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
         /// <summary>
         /// コマンド名
         /// </summary>
-        public const string CommandName = "Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.Connect.ModifyCommentMenuBarViewWidnowView";
+        public const string CommandName = "Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.Connect.ModifyCommentMenuBarViewWidnowView";
 
         public override void OnAddInsUpdate(ref Array custom)
         {
@@ -76,7 +76,7 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
                     //コマンドのコントロールを [ツール] メニューに追加します:
                     if((command != null) && (viewPopup != null))
                     {
-                        command.AddControl(viewPopup.CommandBar, 1);
+                        command.AddControl(viewPopup.CommandBar, viewPopup.Controls.Count + 1);
                     }
                 }
                 catch(System.ArgumentException)
@@ -98,17 +98,20 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
 
         public override void Exec(string CmdName, vsCommandExecOption ExecuteOption, ref object VariantIn, ref object VariantOut, ref bool Handled)
         {
-            IEnumerator windows = this.ApplicationObject.Windows.GetEnumerator();
-            windows.Reset();
-            while(windows.MoveNext())
+            if(CommandName.Equals(CmdName))
             {
-                if(windows != null && windows.Current != null && windows.Current is Window)
+                IEnumerator windows = this.ApplicationObject.Windows.GetEnumerator();
+                windows.Reset();
+                while(windows.MoveNext())
                 {
-                    Window window = (Window)windows.Current;
-                    if(window.Object is CommentEditWindow)
+                    if(windows != null && windows.Current != null && windows.Current is Window)
                     {
-                        window.Visible = !window.Visible;
-                        break;
+                        Window window = (Window)windows.Current;
+                        if(window.Object is CommentEditWindowView)
+                        {
+                            window.Visible = !window.Visible;
+                            break;
+                        }
                     }
                 }
             }

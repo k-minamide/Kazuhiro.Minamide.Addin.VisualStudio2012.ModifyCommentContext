@@ -2,7 +2,7 @@
 using EnvDTE80;
 using Extensibility;
 
-namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
+namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
 {
     public abstract class AddinPart : IDTExtensibility2, IDTCommandTarget
     {

@@ -1,4 +1,4 @@
-﻿namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext
+﻿namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
 {
     partial class CommentEditWindowView
     {
@@ -31,7 +31,7 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.lblDate = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.TextBox();
+            this.txtAuthor = new System.Windows.Forms.TextBox();
             this.dtpDate = new System.Windows.Forms.DateTimePicker();
             this.radBugFix = new System.Windows.Forms.RadioButton();
             this.radAdd = new System.Windows.Forms.RadioButton();
@@ -48,7 +48,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.BackgroundImage = global::Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.Properties.Resources.AddComment;
+            this.btnAdd.BackgroundImage = global::Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.Properties.Resources.AddComment;
             this.btnAdd.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnAdd.Location = new System.Drawing.Point(3, 3);
             this.btnAdd.Name = "btnAdd";
@@ -59,7 +59,7 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.BackgroundImage = global::Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyCommentContext.Properties.Resources.UnComment;
+            this.btnDelete.BackgroundImage = global::Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment.Properties.Resources.UnComment;
             this.btnDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnDelete.Enabled = false;
             this.btnDelete.Location = new System.Drawing.Point(32, 3);
@@ -77,15 +77,15 @@
             this.lblDate.TabIndex = 2;
             this.lblDate.Text = "日付";
             // 
-            // txtName
+            // txtAuthor
             // 
-            this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtAuthor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtName.Location = new System.Drawing.Point(50, 0);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(74, 19);
-            this.txtName.TabIndex = 3;
-            this.txtName.Leave += new System.EventHandler(this.txtName_Leave);
+            this.txtAuthor.Location = new System.Drawing.Point(50, 0);
+            this.txtAuthor.Name = "txtAuthor";
+            this.txtAuthor.Size = new System.Drawing.Size(74, 19);
+            this.txtAuthor.TabIndex = 3;
+            this.txtAuthor.TextChanged += new System.EventHandler(this.txtAuthor_TextChanged);
             // 
             // dtpDate
             // 
@@ -102,36 +102,35 @@
             // radBugFix
             // 
             this.radBugFix.AutoSize = true;
-            this.radBugFix.Enabled = false;
             this.radBugFix.Location = new System.Drawing.Point(61, 6);
             this.radBugFix.Name = "radBugFix";
             this.radBugFix.Size = new System.Drawing.Size(71, 16);
             this.radBugFix.TabIndex = 5;
             this.radBugFix.Text = "障害修正";
             this.radBugFix.UseVisualStyleBackColor = true;
+            this.radBugFix.CheckedChanged += new System.EventHandler(this.radBugFix_CheckedChanged);
             // 
             // radAdd
             // 
             this.radAdd.AutoSize = true;
-            this.radAdd.Enabled = false;
             this.radAdd.Location = new System.Drawing.Point(138, 6);
             this.radAdd.Name = "radAdd";
             this.radAdd.Size = new System.Drawing.Size(71, 16);
             this.radAdd.TabIndex = 5;
             this.radAdd.Text = "機能追加";
             this.radAdd.UseVisualStyleBackColor = true;
+            this.radAdd.CheckedChanged += new System.EventHandler(this.radAdd_CheckedChanged);
             // 
             // radModify
             // 
             this.radModify.AutoSize = true;
-            this.radModify.Checked = true;
             this.radModify.Location = new System.Drawing.Point(215, 6);
             this.radModify.Name = "radModify";
             this.radModify.Size = new System.Drawing.Size(71, 16);
             this.radModify.TabIndex = 5;
-            this.radModify.TabStop = true;
             this.radModify.Text = "機能修正";
             this.radModify.UseVisualStyleBackColor = true;
+            this.radModify.CheckedChanged += new System.EventHandler(this.radModify_CheckedChanged);
             // 
             // splName
             // 
@@ -148,7 +147,7 @@
             // splName.Panel2
             // 
             this.splName.Panel2.Controls.Add(this.lblName);
-            this.splName.Panel2.Controls.Add(this.txtName);
+            this.splName.Panel2.Controls.Add(this.txtAuthor);
             this.splName.Size = new System.Drawing.Size(274, 19);
             this.splName.SplitterDistance = 145;
             this.splName.TabIndex = 6;
@@ -179,7 +178,7 @@
             this.txtComment.Name = "txtComment";
             this.txtComment.Size = new System.Drawing.Size(519, 19);
             this.txtComment.TabIndex = 8;
-            this.txtComment.Leave += new System.EventHandler(this.txtComment_Leave);
+            this.txtComment.TextChanged += new System.EventHandler(this.txtComment_TextChanged);
             // 
             // CommentEditWindowView
             // 
@@ -211,7 +210,7 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Label lblDate;
-        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.TextBox txtAuthor;
         private System.Windows.Forms.DateTimePicker dtpDate;
         private System.Windows.Forms.RadioButton radBugFix;
         private System.Windows.Forms.RadioButton radAdd;
