@@ -15,6 +15,8 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
         {
             InitializeComponent();
 
+            this.txtCommentFormat.Text = GlobalSettings.CommentFormat;
+            this.txtAuthor.Text = GlobalSettings.Author;
             this.txtDateTimeFormat.Text = GlobalSettings.DateTimeFormat;
             this.txtStartText.Text = GlobalSettings.StartText;
             this.txtEndText.Text = GlobalSettings.EndText;
@@ -22,7 +24,7 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
             this.txtAdd.Text = GlobalSettings.AddText;
             this.txtModify.Text = GlobalSettings.ModifyText;
 
-            GlobalSettings.CommentFormatChanged+=GlobalSettings_CommentFormatChanged;
+            GlobalSettings.CommentFormatChanged += GlobalSettings_CommentFormatChanged;
             GlobalSettings.AuthorChanged += GlobalSettings_AuthorChanged;
             GlobalSettings.DateTimeFormatChanged += GlobalSettings_DateTimeFormatChanged;
             GlobalSettings.StartTextChanged += GlobalSettings_StartTextChanged;

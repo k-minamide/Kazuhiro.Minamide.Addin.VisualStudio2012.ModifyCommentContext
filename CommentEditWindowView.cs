@@ -43,15 +43,16 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
             this.radAdd.Checked = GlobalSettings.AddChecked;
             this.radModify.Checked = GlobalSettings.ModifyChecked;
             this.dtpDate.Value = DateTime.Now;
+            this.dtpDate.CustomFormat = GlobalSettings.DateTimeFormat;
             this.txtAuthor.Text = GlobalSettings.Author;
             this.txtComment.Text = GlobalSettings.Comment;
 
             GlobalSettings.BugFixCheckedChanged += GlobalSettings_BugFixCheckedChanged;
             GlobalSettings.AddCheckedChanged += GlobalSettings_AddCheckedChanged;
             GlobalSettings.ModifyCheckedCheckedChanged += GlobalSettings_ModifyCheckedCheckedChanged;
+            GlobalSettings.DateTimeFormatChanged += GlobalSettings_DateTimeFormatChanged;
             GlobalSettings.AuthorChanged += GlobalSettings_AuthorChanged;
             GlobalSettings.CommentChanged += GlobalSettings_CommentChanged;
- 
         }
 
         private void radBugFix_CheckedChanged(object sender, EventArgs e)
@@ -82,6 +83,11 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
         void GlobalSettings_ModifyCheckedCheckedChanged(object sender, EventArgs e)
         {
             this.radModify.Checked = GlobalSettings.ModifyChecked;
+        }
+
+        private void GlobalSettings_DateTimeFormatChanged(object sender, EventArgs e)
+        {
+            this.dtpDate.CustomFormat = GlobalSettings.DateTimeFormat;
         }
 
         private void txtAuthor_TextChanged(object sender, EventArgs e)
@@ -224,9 +230,11 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
                     // 修正コメント(終了)を追加する
                     text.Insert(indentText + GlobalSettings.ToString(false, dtpDate.Value, language));
 
-                    // 最初の行の先頭文字に移動
-                    text.GotoLine(startLine, false);
-                    text.StartOfLine(vsStartOfLineOptions.vsStartOfLineOptionsFirstText, false);
+                    // 最初の行のから最後の行目で選択
+                    text.GotoLine(startLine + 1, false);
+                    text.StartOfLine(vsStartOfLineOptions.vsStartOfLineOptionsFirstColumn, false);
+                    text.MoveToLineAndOffset(endLine, 1, true);
+                    text.CharLeft(true);
                 }
             }
 

@@ -214,9 +214,11 @@ namespace Kazuhiro.Minamide.Addin.VisualStudio2012.ModifyComment
                     // 修正コメント(終了)を追加する
                     text.Insert(indentText + GlobalSettings.ToString(false, language));
 
-                    // 最初の行の先頭文字に移動
-                    text.GotoLine(startLine, false);
-                    text.StartOfLine(vsStartOfLineOptions.vsStartOfLineOptionsFirstText, false);
+                    // 最初の行のから最後の行目で選択
+                    text.GotoLine(startLine + 1, false);
+                    text.StartOfLine(vsStartOfLineOptions.vsStartOfLineOptionsFirstColumn, false);
+                    text.MoveToLineAndOffset(endLine, 1, true);
+                    text.CharLeft(true);
                 }
             }
         }
